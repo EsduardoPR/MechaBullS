@@ -1,20 +1,18 @@
 import http from 'http';
 import { app } from '../../app';
-import { setupWebSocket } from '../../ModuleUser/infraestructure/ws/socketServer'
-import { WebSocketService } from '../../ModuleUser/application/services/websocket_service';
+import { setupWS } from '../../ModuleUser/infraestructure/ws/socketServer';
 
 const startServer = () => {
   const server = http.createServer(app);
-  const port = process.env.PORT || 3000;
-  const webSocketService = new WebSocketService
+  const port = process.env.PORT;
 
-  // Configurar WebSocket
-  new setupWebSocket(server, webSocketService);
+  const wsSetup = new setupWS();
+  wsSetup.connectws();
+
 
   server.listen(port, () => {
     console.log(`Server running on port: ${port}`);
   });
 };
-
 
 export { startServer };

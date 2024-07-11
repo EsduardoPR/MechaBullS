@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 init();
 
+
 app.use('/api/users', userRouter);
 app.use('/api/bovinos', bovinoRouter);
  

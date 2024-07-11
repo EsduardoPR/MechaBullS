@@ -1,58 +1,46 @@
-import { Server as HTTPServer } from 'http';
-import * as http from 'http';
-import { WebSocketServer, WebSocket } from 'ws';
-import { verifyToken } from '../auth/tokenManager';
-import { WebSocketService } from '../../application/services/websocket_service';
+import WebSocket from "ws";
 
-export class setupWebSocket{
-  private wss: WebSocketServer;
-  private connectedClients = 0;
-  private readonly MAX_CONNECTIONS = 5;
-  private webSocketService: WebSocketService;
+const token = process.env.TOKEN_SECRET;
 
-  constructor(server: HTTPServer, webSocketService: WebSocketService) {
-    this.webSocketService = webSocketService;
-    this.wss = new WebSocketServer({ server });
-    
-    this.wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
-        this.handleConnection(ws, req);
-    });
-  }
-  private handleConnection(ws: WebSocket, req: http.IncomingMessage) {
-        if (this.connectedClients >= this.MAX_CONNECTIONS) {
-            ws.close(1000, 'Too many connections');
-            return;
-        }
-        this.connectedClients++;
-        
-        const token = new URL(req.url!, `http://${req.headers.host}`).searchParams.get('token');
-        if (token) {
-            try {
-                const decoded = verifyToken(token);
-                const checkTokenInterval = setInterval(() => {
-                    const currentTime = Date.now() / 1000;
-                    if (decoded.exp && currentTime > decoded.exp) {
-                        setTimeout(() => {
-                            console.log("el token caduco")
-                            const message = {
-                                event: 'token-expired',
-                                message: 'El token de autenticación expiró.'
-                            };
-                            ws.send(JSON.stringify(message));
-                            ws.close(1008, 'Token expired');
-                            this.connectedClients--;
-                        }, 5000);
-                        
-                        clearInterval(checkTokenInterval);
-                    }
-                }, 1000);
-                this.webSocketService.handleConnection(ws, decoded);
-            } catch (err) {
-                ws.close(1008, 'Invalid token');
-            }
-        } else {
-            ws.close(1008, 'Token required');
-        }
-    }
+let retryAttempts = 0;
+const calculateRetryInterval = (attempts: number) => {
+  return Math.min(1000 * Math.pow(2, attempts), 300000);
 };
 
+
+export class setupWS{
+  private ws: WebSocket | null = null;
+  private retryAttempts = 0;
+
+  connectws = () =>{
+    this.ws = new WebSocket('ws://localhost:3030', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    this.ws.on('open', () => { 
+      console.log('\nConexion with Server WS succesfull.\n');
+      retryAttempts = 0;
+    });
+    
+    this.ws.onerror = () => {
+      console.error('\nWebsocket error')
+      this.ws?.close();
+    }
+    this.ws.onclose = () =>{
+      console.log('WebSocket connection closed');
+      this.reconnect();
+    }
+
+  }
+  
+  private reconnect() {
+    const retryInterval = calculateRetryInterval(this.retryAttempts);
+    this.retryAttempts += 1;
+    setTimeout(() => {
+      console.log(`Intentando reconectar... Attempt #${this.retryAttempts}\n`);
+      this.connectws();
+    }, retryInterval);
+  }
+}
