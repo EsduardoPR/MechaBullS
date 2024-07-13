@@ -16,4 +16,11 @@ export class User {
           username: this.username
         };
     }
+    public getPublicUserDataFromRecoveryPasswd() : {id:string, username:string, email:string} {
+        return {
+            id: this.id,
+            username: this.username,
+            email: this.email
+        }
+    }
 }

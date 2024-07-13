@@ -41,11 +41,27 @@ export class DbUserRepository implements UserRepository {
             return null;
         }
     }
+    async getUserByEmail(email: string): Promise<User | null> {
+        try {
+            const userDocument = await userModel.findOne({email}).exec()
+            if(!userDocument){
+                return null
+            }
+            return new User(
+                userDocument.id,
+                userDocument.username,
+                userDocument.email,
+                userDocument.password
+            );
+        } catch (error) {
+            console.error("Error fetching user: ", error);
+            return null;
+        }
+    }
 
     async createUser(username: string, email: string, password: string): Promise<User> {
         console.log(username, email, password)
         try {
-            
             const newUser = new userModel({ username, email, password });
             const savedUser = await newUser.save();
             return new User(
@@ -92,6 +108,26 @@ export class DbUserRepository implements UserRepository {
             );
         } catch (error) {
             console.error("Error updating user: ", error);
+            return null;
+        }
+    }
+
+    async updatePasswdfromUserbyId(userId: string, password: string): Promise<User | null> {
+        try {
+            const userDocument = await userModel.findById(userId)
+            if(!userDocument){
+                return null;
+            }
+            userDocument.password = password;
+            const updatedUser = await userDocument.save();
+            return new User(
+                updatedUser.id,
+                updatedUser.username,
+                updatedUser.email,
+                updatedUser.password
+            );
+        } catch (error) {
+            console.log('Error update new passwd', error)
             return null;
         }
     }

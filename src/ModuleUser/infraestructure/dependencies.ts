@@ -7,6 +7,7 @@ import { DbUserRepository } from "./repositories/dbUserRepository";
 
 const dbUserRepository = new DbUserRepository();
 
+
 export const getUserUseCase = new GetUserUseCase(dbUserRepository);
 export const createUserUseCase = new CreateUserUseCase(dbUserRepository);
 export const updateUserUseCase = new UpdateUserUseCase(dbUserRepository);
