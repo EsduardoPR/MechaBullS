@@ -1,3 +1,4 @@
 /node_modules
 /dist
 /src/ModuleUser/infraestructure/auth/secure/
+/src/ModuleUser/infraestructure/emails/
