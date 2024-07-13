@@ -9,7 +9,7 @@ const expires = {
     expiresIn: '7d'
 };
 const expiresRecoveryPasswd = {
-    expiresIn: '15m'
+    expiresIn: '1h'
 }
 
 export async function generarToken(id:string, username:string, passwdRecovery:string = '', email:string=''): Promise<string> {
