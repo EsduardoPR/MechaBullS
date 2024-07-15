@@ -1,6 +1,6 @@
-import { Bovino } from "../domain/bovino";
-import { BovinoRepository} from "../domain/bovinoRepository";
-import { UpdateBovinoData } from "../domain/types/typesBovino";
+import { Bovino } from "../../domain/models/bovino";
+import { BovinoRepository} from "../../domain/bovinoRepository";
+import { UpdateBovinoData } from "../../domain/types/typesBovino";
 export class PutsBovinoUseCase{ 
     constructor(
         private bovinoRepository: BovinoRepository

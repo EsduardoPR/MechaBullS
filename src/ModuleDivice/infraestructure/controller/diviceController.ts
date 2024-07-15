@@ -1,17 +1,39 @@
 import { Request, Response } from "express";
-import { CreateBovinoUseCase } from "../../application/useCase/createBovinoUseCase";
-import { GetsBovinoUseCase } from "../../application/useCase/getsBovinoUseCase";
-import { PutsBovinoUseCase } from "../../application/useCase/putsBovinoUseCase";
-import { DeletsBovinoUseCase } from "../../application/useCase/deletsBovinoUseCase";
+import { CreateDiviceUseCase } from "../../application/useCase/createDiviceUseCase";
+// import { GetsBovinoUseCase } from "../../application/useCase/getsBovinoUseCase";
+// import { PutsBovinoUseCase } from "../../application/useCase/putsBovinoUseCase";
+// import { DeletsBovinoUseCase } from "../../application/useCase/deletsBovinoUseCase";
 
-export class BovinoController {
+export class DiviceController {
     constructor(
-        private getsBovinoUseCase: GetsBovinoUseCase,
-        private createBovinoUseCase: CreateBovinoUseCase,
-        private putBovinoUseCase: PutsBovinoUseCase,
-        private deleteBovinoUseCase: DeletsBovinoUseCase
+        private createDiviceUseCase: CreateDiviceUseCase,
+        // private getsBovinoUseCase: GetsBovinoUseCase,
+        // private putBovinoUseCase: PutsBovinoUseCase,
+        // private deleteBovinoUseCase: DeletsBovinoUseCase
     ){}
-    async getAllBovinos (req: Request, res: Response): Promise<void>{
+
+    async createDivice (req: Request, res: Response): Promise<void>{
+        const nametag = req.body.nametag;
+        const idUser = req.body.idUser;
+        const idBovino = req.body.idBovino;
+
+        if(!nametag || !idUser || !idBovino){
+            res.status(406).json({message:"Uno o más campos vacios"});
+        }
+
+        try {
+            const newDivice = await this.createDiviceUseCase.create(nametag, idUser, idBovino)
+            res.status(201).json(newDivice)
+        } catch (error: any) {
+            if(error.message === 'exist'){
+                res.status(409).json({message:"El divice ya existe"})
+            } else {
+                res.status(500).json({ message: "Error interno del servidor" });
+            }
+        }
+    }
+
+    /* async getAllBovinos (req: Request, res: Response): Promise<void>{
         try {
             const bovinos = await this.getsBovinoUseCase.getAllBovinos();
             res.status(200).json(bovinos)
@@ -20,8 +42,9 @@ export class BovinoController {
                 res.status(500).json({message: 'Error interno del servidor', error})
             }
         }
-    }
-    async getBovino (req: Request, res:Response): Promise<void>{
+    } */
+
+    /* async getBovino (req: Request, res:Response): Promise<void>{
         const name = req.body.name;
         if(name === ""){
             res.status(406).json({message: "Nombre no es valido"})
@@ -37,28 +60,9 @@ export class BovinoController {
             res.status(500).json({message:"Error interno del servidor"})
            }
         }
-    }    
-    async createBovino (req: Request, res: Response): Promise<void>{
-        const name = req.body.name;
-        const siniga = req.body.siniga;
-        const age = req.body.age;
+    } */ 
 
-        if(!name || !siniga || !age){
-            res.status(406).json({message:"Uno o más campos vacios"});
-        }
-
-        try {
-            const newBovino = await this.createBovinoUseCase.create(name, siniga, age)
-            res.status(201).json(newBovino)
-        } catch (error: any) {
-            if(error.message === 'exist'){
-                res.status(409).json({message:"El bovino ya existe"})
-            } else {
-                res.status(500).json({ message: "Error interno del servidor" });
-            }
-        }
-    }
-    async updateBovino(req: Request, res:Response):Promise<void>{
+    /* async updateBovino(req: Request, res:Response):Promise<void>{
         const name = req.params.name
         const updateData = req.body;
         if(!name || !updateData){
@@ -79,9 +83,9 @@ export class BovinoController {
                 res.status(500).json({message:"Error interno del servidor"});
             }
         }
-    }
+    } */
 
-    async deleteBovino(req: Request, res:Response){
+    /* async deleteBovino(req: Request, res:Response){
         const name = req.params.name;
         if(!name){
             res.status(406).json({message:"Campo vacio"})
@@ -100,8 +104,9 @@ export class BovinoController {
                 res.status(500).json({message:"Error interno del servidor"})
             }
         }
-    }
-    async deleteAllBovinos(req:Request, res: Response){
+    } */
+
+    /* async deleteAllBovinos(req:Request, res: Response){
         try {
             const deleteBovinos = await this.deleteBovinoUseCase.deleteAll();
             res.status(200).json({
@@ -113,5 +118,5 @@ export class BovinoController {
                 res.status(500).json({message: 'Error interno del servidor', error})
             }
         }
-    }
+    } */
 }

@@ -1,3 +1,3 @@
-import { Bovino } from "../bovino";
+import { Bovino } from "../models/bovino";
 
 export type UpdateBovinoData = Partial<Omit<Bovino, 'name' | 'siniga' | 'age'>>;
