@@ -39,8 +39,8 @@ export class BovinoController {
         }
     }    
     async createBovino (req: Request, res: Response): Promise<void>{
-        const name = req.body.name;
-        const siniga = req.body.siniga;
+        const name = req.body.nameBovino;
+        const siniga = req.body.sinigaBovino;
         const age = req.body.age;
 
         if(!name || !siniga || !age){

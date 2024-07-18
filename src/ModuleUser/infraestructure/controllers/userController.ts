@@ -40,7 +40,6 @@ export class UserController {
     }
 
     async register(req: Request, res: Response): Promise<void> {
-        console.log(req.body)
         const { username, email, password, idDispo } = req.body;
         if (!username || !email || !password || !idDispo) {
             res.status(406).json({ message: "All fields are required" });
