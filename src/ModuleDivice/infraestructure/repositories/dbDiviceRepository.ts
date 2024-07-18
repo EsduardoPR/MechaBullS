@@ -27,46 +27,71 @@ export class DbDiviceRepository implements DiviceRepository{
         }
      }
 
-    /* async getAllBovinos(): Promise<Bovino[]|null> {
+    async getAllDivices(): Promise<Divice[]|null> {
         try {
-           const bovinosDocuments = await BovinoModel.find().exec();
-            const bovinos: Bovino[] = bovinosDocuments.map(doc => new Bovino(
+           const divicesDocuments = await DiviceModel.find().exec();
+            const divices: Divice[] = divicesDocuments.map(doc => new Divice(
                 doc.id,
-                doc.name,
-                doc.siniga,
-                doc.age,
-                doc.lpm,
-                doc.averageSteps,
-                doc.location
+                doc.nametag,
+                doc.idUser,
+                doc.idBovino,
             ));
-            return bovinos;
+            return divices;
         } catch (error) {
-            console.error('Error al obtener todos los bovinos:', error);
+            console.error('Error al obtener todos los dispositivos:', error);
             return null
         }
-    } */
+    }
 
-    /* async getBovino(name: string): Promise<Bovino | null>{
+    async getDiviceByUser(idUser: string): Promise<Divice | null>{
        try {
-        const bovinoDocument = await BovinoModel.findOne({name}).exec();
-        if(bovinoDocument){
-            return new Bovino(
-                bovinoDocument.id,
-                bovinoDocument.name,
-                bovinoDocument.siniga,
-                bovinoDocument.age,
-                bovinoDocument.lpm,
-                bovinoDocument.averageSteps,
-                bovinoDocument.location
+        const diviceDocument = await DiviceModel.findOne({ idUser }).exec();
+        if(diviceDocument){
+            return new Divice(
+                diviceDocument.id,
+                diviceDocument.nametag,
+                diviceDocument.idUser,
+                diviceDocument.idBovino,
             )
         } else {
             return null
         }
        } catch (error) {
-        console.error("Error al obtener el bovino por el id:", error)
+        console.error("Error al obtener el dispositivo por el id:", error)
         throw error;
        } 
-    } */
+    }
     
-    /*   */
+    async updateDivice(id: string): Promise<Divice | null> {
+        try {
+            const diviceEncontrado = await DiviceModel.findOne({ id }).exec();
+            if (!diviceEncontrado) {
+                return null
+            }
+            Object.assign(diviceEncontrado);
+            await diviceEncontrado.save();
+            return diviceEncontrado.toObject() as Divice;
+        } catch (error) {
+            console.log("Error al actualizar dispositivo")
+            throw error;
+        }
+    }
+    
+    /* async deleteBovino(name: string): Promise<Bovino | null> {
+        const bovinoEncontrado = await BovinoModel.findOneAndDelete({name}).exec();
+        if(!bovinoEncontrado){
+            return null
+        }
+        return bovinoEncontrado.toObject() as Bovino
+    } */
+
+    /* async deleteAllBovinos(): Promise<{deleteCount: number} | null> {
+        try {
+            const result = await BovinoModel.deleteMany().exec();
+             return {deleteCount: result.deletedCount ?? 0};
+         } catch (error) {
+             console.error('Error al borrar todos los bovinos:', error);
+             return null
+         }
+    } */
 }

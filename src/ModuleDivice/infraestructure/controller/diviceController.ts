@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { CreateDiviceUseCase } from "../../application/useCase/createDiviceUseCase";
-// import { GetsBovinoUseCase } from "../../application/useCase/getsBovinoUseCase";
-// import { PutsBovinoUseCase } from "../../application/useCase/putsBovinoUseCase";
+import { GetsDiviceUseCase } from "../../application/useCase/getsDiviceUseCase";
+import { UpdateDiviceUseCase } from "../../application/useCase/updateDiviceUseCase";
 // import { DeletsBovinoUseCase } from "../../application/useCase/deletsBovinoUseCase";
 
 export class DiviceController {
     constructor(
         private createDiviceUseCase: CreateDiviceUseCase,
-        // private getsBovinoUseCase: GetsBovinoUseCase,
-        // private putBovinoUseCase: PutsBovinoUseCase,
+        private getsDiviceUseCase: GetsDiviceUseCase,
+        private updateDiviceUseCase: UpdateDiviceUseCase,
         // private deleteBovinoUseCase: DeletsBovinoUseCase
     ){}
 
@@ -33,57 +33,57 @@ export class DiviceController {
         }
     }
 
-    /* async getAllBovinos (req: Request, res: Response): Promise<void>{
+    async getAllDivices (req: Request, res: Response): Promise<void>{
         try {
-            const bovinos = await this.getsBovinoUseCase.getAllBovinos();
-            res.status(200).json(bovinos)
+            const divices = await this.getsDiviceUseCase.getAllDivices();
+            res.status(200).json(divices)
         } catch (error:any) {
             if(error.message === 'error-get'){
                 res.status(500).json({message: 'Error interno del servidor', error})
             }
         }
-    } */
+    }
 
-    /* async getBovino (req: Request, res:Response): Promise<void>{
-        const name = req.body.name;
-        if(name === ""){
-            res.status(406).json({message: "Nombre no es valido"})
+    async getDiviceByUser (req: Request, res:Response): Promise<void>{
+        const idUser = req.body.idUser;
+        if(idUser === ""){
+            res.status(406).json({message: "Id no es valido"})
         } 
         try {
-            const bovino = await this.getsBovinoUseCase.getBovino(name);
-            res.json(bovino);
+            const divice = await this.getsDiviceUseCase.getDiviceByUser(idUser);
+            res.json(divice);
         } catch (error:any) {
            if(error.message === 'error-get-findOneName'){
-            res.status(404).json({ message: "Bovino no encontrado" });
+            res.status(404).json({ message: "Dispocitivo no encontrado" });
            }
            if(error.message === 'internal-error-get-findOneName"'){
             res.status(500).json({message:"Error interno del servidor"})
            }
         }
-    } */ 
+    } 
 
-    /* async updateBovino(req: Request, res:Response):Promise<void>{
-        const name = req.params.name
+    async updateDivice(req: Request, res:Response):Promise<void>{
+        const id = req.params.id
         const updateData = req.body;
-        if(!name || !updateData){
+        if(!id || !updateData){
             res.status(406).json({message:"Campos vacios"})
         }
         try {
-            const putBovino = await this.putBovinoUseCase.putBovino(name, updateData)
+            const updatedivice = await this.updateDiviceUseCase.updateDivice(id, updateData)
             res.status(200).json({
-                bovino: putBovino,
-                message:"Bovino actualizado correctamente"
+                divice: updatedivice,
+                message:"dispositivo actualizado correctamente"
             })
 
         } catch (error: any) {
-            if(error.message === 'Bovino-not-found'){
+            if(error.message === 'dispositivo-not-found'){
                 res.status(404).json({message: 'No se ah encontrado'});
             } else {
                 console.log('Error inesperado', error);
                 res.status(500).json({message:"Error interno del servidor"});
             }
         }
-    } */
+    }
 
     /* async deleteBovino(req: Request, res:Response){
         const name = req.params.name;
