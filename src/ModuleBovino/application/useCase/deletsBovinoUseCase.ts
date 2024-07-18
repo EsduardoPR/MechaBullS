@@ -1,4 +1,4 @@
-import { BovinoRepository } from "../domain/bovinoRepository";
+import { BovinoRepository } from "../../domain/bovinoRepository";
 
 export class DeletsBovinoUseCase {
     constructor(

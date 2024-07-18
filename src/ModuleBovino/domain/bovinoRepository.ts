@@ -1,4 +1,4 @@
-import { Bovino } from './bovino'
+import { Bovino } from './models/bovino'
 import { UpdateBovinoData } from './types/typesBovino';
 export interface BovinoRepository {
     getAllBovinos(): Promise<Bovino[]|null>;

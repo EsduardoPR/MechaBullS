@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "clean": "rimraf dist",
     "build": "npx tsc",
     "start": "NODE_ENV=test node dist/index.js",
     "dev": "npm run build && npm start",

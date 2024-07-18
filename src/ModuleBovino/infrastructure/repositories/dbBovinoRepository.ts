@@ -1,11 +1,11 @@
 import { Model } from "mongoose";
-import { Bovino } from "../../domain/bovino";
+import { Bovino } from "../../domain/models/bovino";
 import { BovinoRepository } from "../../domain/bovinoRepository";
-import { BovinoDocument, Bovino as BovinoModel } from "../mongoModels/bovinoModel";
+import { Bovino as BovinoModel } from "../mongoModels/bovinoModel";
 import { UpdateBovinoData } from "../../domain/types/typesBovino";
 
 export class DbBovinoRepository implements BovinoRepository{
-    private BovinoModel: Model<BovinoDocument>
+
     bovinoRepository: DbBovinoRepository;
 
     async getAllBovinos(): Promise<Bovino[]|null> {

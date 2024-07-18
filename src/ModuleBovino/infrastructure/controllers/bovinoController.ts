@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { CreateBovinoUseCase } from "../../application/createBovinoUseCase";
-import { GetsBovinoUseCase } from "../../application/getsBovinoUseCase";
-import { PutsBovinoUseCase } from "../../application/putsBovinoUseCase";
-import { DeletsBovinoUseCase } from "../../application/deletsBovinoUseCase";
+import { CreateBovinoUseCase } from "../../application/useCase/createBovinoUseCase";
+import { GetsBovinoUseCase } from "../../application/useCase/getsBovinoUseCase";
+import { PutsBovinoUseCase } from "../../application/useCase/putsBovinoUseCase";
+import { DeletsBovinoUseCase } from "../../application/useCase/deletsBovinoUseCase";
 
 export class BovinoController {
     constructor(
