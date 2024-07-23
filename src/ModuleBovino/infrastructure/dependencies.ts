@@ -24,6 +24,11 @@ import { LocationController } from "./controllers/locationController";
 import { DbLocationRepository } from "./repositories/dbLocationRepository";
 
 
+//check-token-user
+import { userController } from "../../ModuleUser/infraestructure/dependencies";
+
+
+
 // Repositorios
 const dbBovinoRepository = new DbBovinoRepository();
 const dbLpmRepository = new DbLpmRepository();
@@ -48,12 +53,16 @@ const createLocationUseCase = new CreateLocationUseCase(dbLocationRepository);
 const getsLocationUseCase = new GetLocationUseCase(dbLocationRepository);
 const deleteLocationUseCase = new DeletsLocationUseCase(dbLocationRepository);
 
+
+
+
 // Controladores
 export const bovinoController = new BovinoController(
     getBovinoUseCase,
     createBovinoUseCase,
     putsBovinoUseCase,
-    deletsBovinoUseCase
+    deletsBovinoUseCase,
+    userController
 );
 
 export const lpmController = new LpmController(

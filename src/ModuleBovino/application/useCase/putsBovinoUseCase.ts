@@ -6,8 +6,8 @@ export class PutsBovinoUseCase{
         private bovinoRepository: BovinoRepository
     ){}
 
-    async putBovino(name: string, updateData:UpdateBovinoData): Promise<Bovino | null>{
-        const updateBovino = await this.bovinoRepository.putBovino(name, updateData)
+    async putBovino(idBovino: string, updateData:UpdateBovinoData): Promise<Bovino | null>{
+        const updateBovino = await this.bovinoRepository.putBovino(idBovino, updateData)
         if (!updateBovino) {
             throw new Error('Bovino-not-found');
         }

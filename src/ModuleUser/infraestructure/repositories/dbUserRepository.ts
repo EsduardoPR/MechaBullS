@@ -58,6 +58,28 @@ export class DbUserRepository implements UserRepository {
             return null;
         }
     }
+    async getUserById(id: string): Promise<User | null> {
+        try {
+            const userDocument = await userModel.findById(id).exec();
+            if(!userDocument){
+                return null
+            }
+            return new User(
+                userDocument.id,
+                userDocument.username,
+                userDocument.email,
+                userDocument.password
+            );
+        } catch (error) {
+            console.error("Error fetching user: ", error);
+            return null;
+        }
+    }
+
+
+
+
+
 
     async createUser(username: string, email: string, password: string): Promise<User> {
         console.log(username, email, password)

@@ -6,8 +6,9 @@ export class Bovino {
     private lpm:number;
     private averageSteps:number;
     private location:number;
+    private userId:string;
 
-    constructor(id: string, name:string, siniga:string, age:number, lpm:number, averageSteps:number, location:number){
+    constructor(id: string, name:string, siniga:string, age:number, lpm:number, averageSteps:number, location:number, userId:string){
         this.id = id;
         this.name = name;
         this.siniga = siniga;
@@ -15,5 +16,6 @@ export class Bovino {
         this.lpm = lpm;
         this.averageSteps = averageSteps;
         this.location = location;
+        this.userId = userId;
     }
 }

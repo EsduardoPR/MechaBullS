@@ -23,4 +23,11 @@ export class User {
             email: this.email
         }
     }
+    public getUserOnlineData(): {id:string, username:string, email:string}{
+        return {
+            id:this.id,
+            username: this.username,
+            email: this.email
+        }
+    }
 }

@@ -6,6 +6,8 @@ import { DeleteUserUseCase } from "../../application/deleteUserUseCase";
 import { generarToken, invalidateToken, verifyToken } from "../auth/tokenManager";
 
 
+
+
 export class UserController {
     constructor(
         private getUserUseCase: GetUserUseCase,
@@ -15,6 +17,28 @@ export class UserController {
 
         
     ) {}
+
+    async getUserOnline(req:Request, res:Response):Promise<void>{
+        const { token } = req.body;
+        if(!token){
+            res.status(406).json({ message: "campos requeridos" });
+            return;
+        }
+        try {
+            const decode = await verifyToken(token)
+            if(decode){
+                const user = await this.getUserUseCase.getUserById(decode.userId)
+                res.status(200).json(user)
+            }
+        } catch (error:any) {
+            if(error.message === 'error-get-user'){
+                res.status(404).json({ message: "token-invalid-or-get-user" });
+                return;
+            }
+            res.status(500).json({ message: "Internal server error", error });
+            return;
+        }
+    }
 
     async login(req: Request, res: Response): Promise<void> {
         const { username, password } = req.body;
@@ -147,6 +171,18 @@ export class UserController {
             res.status(200).json({ message: "User deleted successfully" });
         } catch (error: any) {
             res.status(500).json({ message: "Internal server error", error });
+        }
+    }
+
+
+
+
+    async verifyToken(token:string):Promise<string | null>{
+        try {
+            const decode = await verifyToken(token)
+            return decode.userId
+        } catch (error) {
+            throw new Error('token-invalid');
         }
     }
 }

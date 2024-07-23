@@ -16,4 +16,12 @@ export class GetUserUseCase {
         }
         return getUser.getPublicUserDataFromRecoveryPasswd();
     }
+    
+    async getUserById(id:string):Promise<{id:string, username:string, email:string}|null>{
+        const getUser = await this.userRepository.getUserById(id)
+        if(!getUser){
+            throw new Error("error-get-user");
+        } 
+        return getUser.getUserOnlineData();
+    }
 }

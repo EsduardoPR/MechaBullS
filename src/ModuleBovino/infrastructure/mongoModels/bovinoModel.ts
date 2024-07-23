@@ -8,6 +8,7 @@ export interface BovinoDocument extends Document {
     lpm: number;
     averageSteps: number;
     location: number;
+    userId:string;
 }
 
 // Define el esquema (Schema) de Mongoose para Bovino utilizando la interfaz BovinoDocument
@@ -18,6 +19,7 @@ const BovinoSchema: Schema<BovinoDocument> = new Schema({
     lpm: { type: Number, default: 0 },
     averageSteps: { type: Number, default: 0 },
     location: { type: Number, default: 0 },
+    userId:{ type: String, required:true}
 });
 
 // Crea y exporta el modelo de Mongoose basado en el esquema y la interfaz definidos
